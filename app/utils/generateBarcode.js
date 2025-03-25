@@ -1,4 +1,15 @@
-import { createCanvas } from 'canvas';
+// Import modules differently for server-side and client-side
+let createCanvas;
+if (typeof window === 'undefined') {
+  // Server-side (Node.js) - dynamically import
+  const canvas = require('canvas');
+  createCanvas = canvas.createCanvas;
+} else {
+  // Client-side - canvas would be handled differently
+  // This code won't actually run on the client due to Next.js API routes
+  createCanvas = null;
+}
+
 import JsBarcode from 'jsbarcode';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -9,6 +20,11 @@ export async function generateISBNBarcode(isbnData) {
   // Validate ISBN format (must start with 978 and be 13 digits)
   if (!/^978\d{10}$/.test(cleanIsbn)) {
     throw new Error('ISBN must start with 978 and contain 13 digits in total');
+  }
+
+  // Server-side check to ensure we're not trying to generate on the client
+  if (!createCanvas) {
+    throw new Error('Barcode generation can only be performed server-side');
   }
 
   // Define high-resolution dimensions (300 DPI)
@@ -46,7 +62,7 @@ export async function generateISBNBarcode(isbnData) {
   // Generate a filename
   const filename = `ISBN-${cleanIsbn}-300dpi.png`;
 
-  return { base64Image, filename, cleanIsbn };
+  return { base64Image, filename, cleanIsbn, formattedIsbn: formatISBN(cleanIsbn) };
 }
 
 // Format ISBN with proper hyphenation (978-xxxx-xxxx-xx-x)

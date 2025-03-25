@@ -1,0 +1,12 @@
+{
+  "buildCommand": "npm run build",
+  "installCommand": "npm install --production=false",
+  "framework": "nextjs",
+  "regions": ["bom1"],
+  "functions": {
+    "app/api/generate-barcode/route.js": {
+      "memory": 1024,
+      "maxDuration": 10
+    }
+  }
+}

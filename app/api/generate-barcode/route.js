@@ -1,6 +1,10 @@
 import { generateISBNBarcode, formatISBN } from '@/app/utils/generateBarcode';
 import { NextResponse } from 'next/server';
   
+// This config enables the API route to use the Node.js runtime which supports canvas
+export const runtime = 'nodejs';
+export const preferredRegion = 'auto';
+
 // Handle POST requests
 export async function POST(request) {
   try {
@@ -15,10 +19,7 @@ export async function POST(request) {
     }
 
     // Generate the ISBN barcode
-    const { base64Image, filename, cleanIsbn } = await generateISBNBarcode(isbnData);
-
-    // Format ISBN for display
-    const formattedIsbn = formatISBN(cleanIsbn);
+    const { base64Image, filename, cleanIsbn, formattedIsbn } = await generateISBNBarcode(isbnData);
 
     return NextResponse.json({
       success: true,
