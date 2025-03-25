@@ -27,27 +27,6 @@ export default function Home() {
       <div className="grid gap-6 md:grid-cols-2">
         <BarcodeGeneratorForm onBarcodeGenerated={setBarcodeInfo} />
         <PocketSpineCalculator />
-
-        {/* <CorreiosCard
-          icon={<Search className="h-5 w-5" />}
-          title="Rastreamento"
-          description="Rastreie pacotes e acompanhe o status das entregas"
-          href="/correios/tracking"
-        />
-
-        <CorreiosCard
-          icon={<Truck className="h-5 w-5" />}
-          title="Envios"
-          description="Gerencie seus envios e crie novas postagens"
-          href="/correios/shipping"
-        />
-
-        <CorreiosCard
-          icon={<FileText className="h-5 w-5" />}
-          title="Relatórios"
-          description="Visualize e exporte relatórios de entregas"
-          href="/correios/reports"
-        /> */}
       </div>
 
       {barcodeInfo && <GeneratedBarcode barcodeInfo={barcodeInfo} />}

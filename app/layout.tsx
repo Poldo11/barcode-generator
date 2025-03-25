@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import { AppSidebar } from "@/components/app-sidebar";
+import { CatBanner } from "@/components/cat-banner";
 import {
   SidebarInset,
   SidebarProvider,
@@ -33,7 +34,8 @@ export default function RootLayout({
               <SidebarTrigger />
               <div className="ml-2 text-lg font-semibold">Controle Aboio</div>
             </header>
-            <main className="flex-1 p-4">{children}</main>
+            <main className="flex-1 p-4 pb-20">{children}</main>
+            <CatBanner />
           </SidebarInset>
         </SidebarProvider>
       </body>
