@@ -12,7 +12,6 @@
     "@aws-sdk/client-s3": "^3.525.0",
     "@aws-sdk/s3-request-presigner": "^3.525.0",
     "jsbarcode": "^3.11.5",
-    "canvas": "^2.11.2",
     "next": "14.1.0",
     "react": "^18",
     "react-dom": "^18",
