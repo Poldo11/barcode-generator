@@ -67,15 +67,22 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <a href="/codigo-de-barras/isbn">
+                  <a href="/">
                     <Barcode className="h-4 w-4" />
-                    <span>Gerador de Código de Barras</span>
+                    <span>Informações de livros</span>
                   </a>
                 </SidebarMenuButton>
                 <SidebarMenuSub>
                   <SidebarMenuSubItem>
                     <SidebarMenuSubButton asChild>
-                      <a href="/codigo-de-barras/isbn">ISBN</a>
+                      <a href="/codigo-de-barras">Código de barras</a>
+                    </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
+                </SidebarMenuSub>
+                <SidebarMenuSub>
+                  <SidebarMenuSubItem>
+                    <SidebarMenuSubButton asChild>
+                      <a href="/lombada">Calculador de lombada</a>
                     </SidebarMenuSubButton>
                   </SidebarMenuSubItem>
                 </SidebarMenuSub>

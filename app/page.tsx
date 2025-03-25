@@ -4,6 +4,7 @@ import { Barcode, Search, Truck, FileText } from "lucide-react";
 import { BarcodeGeneratorForm } from "@/components/barcode-generator-form";
 import { CorreiosCard } from "@/components/correios-card";
 import { GeneratedBarcode } from "@/components/generated-barcode";
+import PocketSpineCalculator from "@/components/pocket-spine-calculator";
 import { useState } from "react";
 
 interface BarcodeInfo {
@@ -25,8 +26,9 @@ export default function Home() {
 
       <div className="grid gap-6 md:grid-cols-2">
         <BarcodeGeneratorForm onBarcodeGenerated={setBarcodeInfo} />
+        <PocketSpineCalculator />
 
-        <CorreiosCard
+        {/* <CorreiosCard
           icon={<Search className="h-5 w-5" />}
           title="Rastreamento"
           description="Rastreie pacotes e acompanhe o status das entregas"
@@ -45,7 +47,7 @@ export default function Home() {
           title="Relatórios"
           description="Visualize e exporte relatórios de entregas"
           href="/correios/reports"
-        />
+        /> */}
       </div>
 
       {barcodeInfo && <GeneratedBarcode barcodeInfo={barcodeInfo} />}
