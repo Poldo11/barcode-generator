@@ -1,0 +1,15 @@
+[install]
+# Prefer exact versions
+exact = true
+
+[install.cache]
+# Enable global cache to speed up installations
+global = true
+
+[runtime]
+# Use the Bun runtime for JSX/TSX files
+jsx = "react"
+
+[test]
+# Use Jest-compatible test syntax
+preload = "./setup-tests.ts"

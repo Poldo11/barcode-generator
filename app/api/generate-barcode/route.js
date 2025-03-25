@@ -1,11 +1,7 @@
-import { generateISBNBarcode, formatISBN } from '@/app/utils/generateBarcode';
+import { validateISBN, formatISBN } from '@/app/utils/generateBarcode';
 import { NextResponse } from 'next/server';
-  
-// This config enables the API route to use the Node.js runtime which supports canvas
-export const runtime = 'nodejs';
-export const preferredRegion = 'auto';
 
-// Handle POST requests
+// Handle POST requests for ISBN validation
 export async function POST(request) {
   try {
     const body = await request.json();
@@ -18,19 +14,23 @@ export async function POST(request) {
       );
     }
 
-    // Generate the ISBN barcode
-    const { base64Image, filename, cleanIsbn, formattedIsbn } = await generateISBNBarcode(isbnData);
+    // Just validate the ISBN - barcode will be generated client-side
+    const cleanIsbn = validateISBN(isbnData);
+    const formattedIsbn = formatISBN(cleanIsbn);
+    
+    // Generate a filename for download
+    const filename = `ISBN-${cleanIsbn}.svg`;
 
     return NextResponse.json({
       success: true,
-      filename: filename,
-      imageData: base64Image,
-      formattedIsbn: formattedIsbn
+      filename,
+      cleanIsbn,
+      formattedIsbn
     });
   } catch (error) {
-    console.error('Error generating ISBN barcode:', error);
+    console.error('Error validating ISBN:', error);
     return NextResponse.json(
-      { message: error.message || 'Error generating ISBN barcode' },
+      { message: error.message || 'Error validating ISBN' },
       { status: 500 }
     );
   }
