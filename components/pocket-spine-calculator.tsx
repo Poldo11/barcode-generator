@@ -20,6 +20,7 @@ import {
 
 // Simplified paper types with just the most common ones
 const PAPER_TYPES = [
+  { name: "Polen Bold 70g/m²", factor: 0.136 },
   { name: "Polen Soft 80g/m²", factor: 0.095 },
   { name: "Offset 70g/m²", factor: 0.09 },
   { name: "Offset 90g/m²", factor: 0.115 },

@@ -23,9 +23,9 @@ import { Separator } from "@/components/ui/separator";
 
 // Tipos de papel e seus fatores
 const PAPER_TYPES = [
+  { name: "Polen Bold 70g/m²", factor: 0.136, grammage: 70 },
   { name: "Polen Soft 80g/m²", factor: 0.095, grammage: 80 },
   { name: "Polen Soft Premium 80g/m²", factor: 0.108, grammage: 80 },
-  { name: "Polen Bold 70g/m²", factor: 0.124, grammage: 70 },
   { name: "Polen Bold 90g/m²", factor: 0.144, grammage: 90 },
   { name: "Offset 56g/m²", factor: 0.074, grammage: 56 },
   { name: "Offset 63g/m²", factor: 0.081, grammage: 63 },

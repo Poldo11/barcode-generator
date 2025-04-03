@@ -1,3 +1,5 @@
+"use client";
+
 import type * as React from "react";
 import {
   Barcode,
@@ -7,6 +9,8 @@ import {
   ChevronDown,
   LogOut,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 import {
   Sidebar,
@@ -31,15 +35,51 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
+import { useEffect, useState } from "react";
+import { getCurrentUser, signOutUser } from "@/lib/actions/user.actions";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const router = useRouter();
+  const [user, setUser] = useState<{ name: string; email: string } | null>(
+    null
+  );
+
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const currentUser = await getCurrentUser();
+        if (currentUser) {
+          setUser({
+            name: currentUser.fullName,
+            email: currentUser.email,
+          });
+        }
+      } catch (error) {
+        console.error("Error loading user:", error);
+      }
+    };
+    loadUser();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await signOutUser();
+      toast.success("Logout realizado com sucesso!");
+      router.push("/sign-in");
+    } catch (error) {
+      console.error("Error logging out:", error);
+      toast.error("Erro ao fazer logout");
+    }
+  };
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <a href="/" className="flex items-center">
+              <Link href="/" className="flex items-center">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                   <Package className="size-4" />
                 </div>
@@ -47,7 +87,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <span className="font-semibold">Controle Aboio</span>
                   <span className="text-xs text-muted-foreground">v1.0.0</span>
                 </div>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -59,65 +99,48 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <a href="/">
+                  <Link href="/">
                     <Home className="h-4 w-4" />
                     <span>Início</span>
-                  </a>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <a href="/">
+                  <Link href="/">
                     <Barcode className="h-4 w-4" />
                     <span>Informações de livros</span>
-                  </a>
+                  </Link>
                 </SidebarMenuButton>
                 <SidebarMenuSub>
                   <SidebarMenuSubItem>
                     <SidebarMenuSubButton asChild>
-                      <a href="/codigo-de-barras">Código de barras</a>
+                      <Link href="/codigo-de-barras">Código de barras</Link>
                     </SidebarMenuSubButton>
                   </SidebarMenuSubItem>
                 </SidebarMenuSub>
                 <SidebarMenuSub>
                   <SidebarMenuSubItem>
                     <SidebarMenuSubButton asChild>
-                      <a href="/lombada">Calculador de lombada</a>
+                      <Link href="/lombada">Calculador de lombada</Link>
                     </SidebarMenuSubButton>
                   </SidebarMenuSubItem>
                 </SidebarMenuSub>
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <a href="/correios" aria-disabled="true">
+                  <Link href="/prepostagem" aria-disabled={true}>
                     <Package className="h-4 w-4" />
-                    <span>Gestão de Entregas</span>
-                  </a>
+                    <span>Prepostagem</span>
+                  </Link>
                 </SidebarMenuButton>
-                <SidebarMenuSub>
-                  <SidebarMenuSubItem>
-                    <SidebarMenuSubButton asChild aria-disabled="true">
-                      <a href="/correios/tracking">Rastreamento</a>
-                    </SidebarMenuSubButton>
-                  </SidebarMenuSubItem>
-                  <SidebarMenuSubItem>
-                    <SidebarMenuSubButton asChild aria-disabled="true">
-                      <a href="/correios/shipping">Envios</a>
-                    </SidebarMenuSubButton>
-                  </SidebarMenuSubItem>
-                  <SidebarMenuSubItem>
-                    <SidebarMenuSubButton asChild aria-disabled="true">
-                      <a href="/correios/reports">Relatórios</a>
-                    </SidebarMenuSubButton>
-                  </SidebarMenuSubItem>
-                </SidebarMenuSub>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild aria-disabled="true">
-                  <a href="/settings">
+                <SidebarMenuButton asChild>
+                  <Link href="/settings">
                     <Settings className="h-5 w-4" />
                     <span>Configurações</span>
-                  </a>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
@@ -129,15 +152,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton disabled>
+                <SidebarMenuButton>
                   <Avatar className="h-6 w-6">
                     <AvatarImage
-                      src="/placeholder.svg?height=32&width=32"
-                      alt="Avatar"
+                      src={`https://api.dicebear.com/7.x/initials/svg?seed=${
+                        user?.name || "U"
+                      }`}
+                      alt={user?.name || "Usuário"}
                     />
-                    <AvatarFallback>U</AvatarFallback>
+                    <AvatarFallback>
+                      {user?.name?.charAt(0) || "U"}
+                    </AvatarFallback>
                   </Avatar>
-                  <span>Usuário</span>
+                  <span>{user?.name || "Usuário"}</span>
                   <ChevronDown className="ml-auto h-4 w-4" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
@@ -145,13 +172,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 align="start"
                 className="w-[--radix-popper-anchor-width]"
               >
-                <DropdownMenuItem disabled>
-                  <span>Perfil</span>
+                <DropdownMenuItem>
+                  <span>{user?.email}</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem disabled>
-                  <span>Preferências</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="text-destructive" disabled>
+                <DropdownMenuItem
+                  className="text-destructive"
+                  onClick={handleLogout}
+                >
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Sair</span>
                 </DropdownMenuItem>
